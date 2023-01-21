@@ -1,6 +1,6 @@
 """This is a server - basic test"""
 
-from socket import *
+import socket
 
 PORT = 12000
 

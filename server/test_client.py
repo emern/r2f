@@ -1,5 +1,5 @@
 """ Test client """
-from socket import *
+import socket
 
 HOST = '207.81.215.40'
 PORT = 12000
