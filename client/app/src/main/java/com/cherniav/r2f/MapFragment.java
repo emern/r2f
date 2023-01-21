@@ -1,6 +1,10 @@
 package com.cherniav.r2f;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -53,10 +57,19 @@ public class MapFragment extends Fragment {
         // ////////(NOTE: make variable later)
         IMapController mapController = map.getController();
 
-        mapController.setZoom(8);
+        mapController.setZoom(16);
+
+        // Get current location
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        @SuppressLint("MissingPermission")
+        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
 
         // Set start point
-        GeoPoint startPoint = new GeoPoint(49.2827, -123.1207);
+        GeoPoint startPoint = new GeoPoint(convertLoc(latitude, longitude));
 
         // Set map initialization point
         mapController.setCenter(startPoint);
@@ -68,5 +81,12 @@ public class MapFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return mapView;
+    }
+
+    // Function to convert lat, long to GeoPoint for mapping purposes
+    public static GeoPoint convertLoc(double latitude, double longitude){
+        int lat = (int)(latitude*1E6);
+        int lng = (int)(longitude*1E6);
+        return new GeoPoint(lat, lng);
     }
 }
