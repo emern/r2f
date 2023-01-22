@@ -1,4 +1,4 @@
-package com.cherniav.r2f.ui.dashboard;
+package com.cherniav.r2f.ui.review;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,19 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.cherniav.r2f.databinding.FragmentDashboardBinding;
+import com.cherniav.r2f.databinding.FragmentNotificationsBinding;
 
-public class DashboardFragment extends Fragment {
+public class ReviewFragment extends Fragment {
 
-    private FragmentDashboardBinding binding;
+    private FragmentNotificationsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        ReviewViewModel reviewViewModel =
+                new ViewModelProvider(this).get(ReviewViewModel.class);
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        final TextView textView = binding.textNotifications;
+        reviewViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

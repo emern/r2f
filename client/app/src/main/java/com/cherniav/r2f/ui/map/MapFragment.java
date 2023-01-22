@@ -1,4 +1,4 @@
-package com.cherniav.r2f.ui.home;
+package com.cherniav.r2f.ui.map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
