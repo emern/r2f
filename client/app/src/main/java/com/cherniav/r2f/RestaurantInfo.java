@@ -3,43 +3,41 @@ package com.cherniav.r2f;
 public class RestaurantInfo {
 
     // Init class vars
-    private String restaurantName;
-    private int numReviews;
-    private int reviewRating;
-    private double rLatitude;
-    private double rLongitude;
-
-    private String placeid;
+    private String name;
+    private int total_ratings;
+    private double score;
+    private double ref_lat;
+    private double ref_long;private String placeid;
 
     // Class constructor
     public RestaurantInfo(String restaurantName, int numReviews, int reviewRating, double rLatitude, double rLongitude, String placeid){
-        this.restaurantName = restaurantName;
-        this.numReviews = numReviews;
-        this.reviewRating = reviewRating;
-        this.rLatitude = rLatitude;
-        this.rLongitude = rLongitude;
+        this.name = restaurantName;
+        this.total_ratings = numReviews;
+        this.score = reviewRating;
+        this.ref_lat = rLatitude;
+        this.ref_long = rLongitude;
         this.placeid = placeid;
     }
 
     // Functions to retrieve certain info
     public String getRestaurantName(){
-        return this.restaurantName;
+        return this.name;
     }
 
     public int getNumReviews(){
-        return this.numReviews;
+        return this.total_ratings;
     }
 
-    public int getReviewRating(){
-        return this.reviewRating;
+    public double getReviewRating(){
+        return this.score;
     }
 
     public double getrLatitude(){
-        return this.rLatitude;
+        return this.ref_lat;
     }
 
     public double getrLongitude(){
-        return this.rLongitude;
+        return this.ref_long;
     }
 
 }

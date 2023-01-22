@@ -13,8 +13,6 @@ import java.util.Locale;
 
 public class ListViewAdapter extends BaseAdapter {
 
-    // Declare Variables
-
     Context mContext;
     LayoutInflater inflater;
     private List<RestaurantInfo> restaurantNamesList;
@@ -46,6 +44,7 @@ public class ListViewAdapter extends BaseAdapter {
         return position;
     }
 
+    @Override
     public View getView(final int position, View view, ViewGroup parent) {
         final ViewHolder holder;
         if (view == null) {
@@ -65,7 +64,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     // Filter Class
     public void filter(ArrayList<RestaurantInfo> newdata) {
-        this.restaurantNamesList = newdata;
+        this.restaurantNamesList.addAll(newdata);
         notifyDataSetChanged();
     }
 }

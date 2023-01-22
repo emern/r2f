@@ -140,6 +140,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onQueryTextChange(String newText) {
         ArrayList<RestaurantInfo> new_results = R2fSocket.searchRestaurantsWithName(newText);
+        for (RestaurantInfo res: new_results) {
+            System.out.println(res.getRestaurantName());
+        }
         adapter.filter(new_results);
         return true;
     }
