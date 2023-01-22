@@ -33,7 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.23000002" />
 
     <TextView
         android:id="@+id/res_spec_text"
@@ -58,65 +58,6 @@
         app:layout_constraintStart_toEndOf="@+id/res_spec_text"
         app:layout_constraintTop_toBottomOf="@+id/review_text" />
 
-    <RadioGroup
-        android:orientation="horizontal"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
-
-    </RadioGroup>
-
-    <RadioButton
-        android:id="@+id/nogo_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
-        android:onClick="onRadioButtonClicked"
-        android:text="No Go"
-        android:textAllCaps="true"
-        android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tossup_btn" />
-
-    <RadioButton
-        android:id="@+id/tossup_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="75dp"
-        android:onClick="onRadioButtonClicked"
-        android:text="Toss-Up"
-        android:textAllCaps="true"
-        android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/res_spec_text" />
-
-    <RadioButton
-        android:id="@+id/mustgo_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="-150dp"
-        android:layout_marginTop="50dp"
-        android:onClick="onRadioButtonClicked"
-        android:text="Must-Go"
-        android:textAllCaps="true"
-        android:textSize="18dp"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/go_btn" />
-
-    <RadioButton
-        android:id="@+id/go_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="-150dp"
-        android:layout_marginTop="75dp"
-        android:onClick="onRadioButtonClicked"
-        android:text="Go"
-        android:textAllCaps="true"
-        android:textSize="18dp"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/res_spec_text" />
-
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
@@ -126,6 +67,53 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nogo_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup2"
+        android:layout_width="302dp"
+        android:layout_height="218dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/res_spec_text"
+        app:layout_constraintVertical_bias="0.35000002">
+
+        <RadioButton
+            android:id="@+id/nogo_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No-Go"
+            android:textAllCaps="true"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/tossup_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Toss-Up"
+            android:textAllCaps="true"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/go_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Go"
+            android:textAllCaps="true"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/mustgo_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Must-Go"
+            android:textAllCaps="true"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.SearchView;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -115,6 +115,31 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     this,
                     permissionsToRequest.toArray(new String[0]),
                     REQUEST_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.nogo_btn:
+                if (checked)
+                    // *poke* Do something
+                    break;
+            case R.id.tossup_btn:
+                if (checked)
+                    // *poke* Do something
+                    break;
+            case R.id.go_btn:
+                if (checked)
+                    // *poke* Do something
+                    break;
+            case R.id.mustgo_btn:
+                if (checked)
+                    // *poke* Do something
+                    break;
         }
     }
 
