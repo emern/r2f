@@ -24,8 +24,6 @@ public class ReviewFragment extends Fragment {
         binding = FragmentReviewBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textNotifications;
-        reviewViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
