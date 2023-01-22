@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.SearchView;
@@ -46,6 +47,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.listview);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                System.out.println("clicked" + position);
+            }
+
+        });
 
         // Pass results to ListViewAdapter Class
         adapter = new ListViewAdapter(this, arraylist);
@@ -140,9 +150,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onQueryTextChange(String newText) {
         ArrayList<RestaurantInfo> new_results = R2fSocket.searchRestaurantsWithName(newText);
-        for (RestaurantInfo res: new_results) {
-            System.out.println(res.getRestaurantName());
-        }
         adapter.filter(new_results);
         return true;
     }

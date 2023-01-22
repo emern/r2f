@@ -57,13 +57,17 @@ public class ListViewAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         // Set the results into TextViews
-        holder.name.setText(restaurantNamesList.get(position).getRestaurantName());
+        holder.name.clearComposingText();
+        String display_str = restaurantNamesList.get(position).getRestaurantName() + '\n' +
+                            restaurantNamesList.get(position).getReviewRating();
+        holder.name.setText(display_str);
         return view;
     }
 
 
     // Filter Class
     public void filter(ArrayList<RestaurantInfo> newdata) {
+        this.restaurantNamesList.clear();
         this.restaurantNamesList.addAll(newdata);
         notifyDataSetChanged();
     }
