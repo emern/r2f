@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cherniav.r2f.R;
+import com.cherniav.r2f.RestaurantInfo;
+import com.cherniav.r2f.ui.R2fSocket;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
@@ -23,6 +25,8 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import java.util.ArrayList;
 
 public class MapFragment extends Fragment {
 
@@ -74,11 +78,13 @@ public class MapFragment extends Fragment {
         // Set map initialization point
         mapController.setCenter(startPoint);
 
-        // Generate example UBC marker
-        GeoPoint UBC_COORDS = convertLoc(49.2606, -123.2460);
-        GeoPoint UBC_COORDS_2 = convertLoc(49.267941, -123.247360);
-        genMarker("UBC", "Insert Description here", "12", "12", UBC_COORDS);
-        genMarker("UBC 2", "Insert Description Here", "13", "13", UBC_COORDS_2);
+        ArrayList<RestaurantInfo> markingInfo = R2fSocket.searchNearbyRestaurants(latitude, longitude, 5, 500);
+
+        for (int i=0; i < markingInfo.size();i++){
+
+            genMarker(markingInfo.get(i).getRestaurantName(), null, markingInfo.get(i).getReviewRating(), markingInfo.get(i).getNumReviews(), convertLoc(markingInfo.get(i).getrLatitude(), markingInfo.get(i).getrLongitude()));
+
+        }
 
         Bitmap lookingBitmap = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.locsprite);
@@ -99,7 +105,7 @@ public class MapFragment extends Fragment {
         int lng = (int)(longitude*1E6);
         return new GeoPoint(lat, lng);
     }
-    public void genMarker(String mMarkerName, String mDescription, String rating, String reviewNum, GeoPoint mMarkerLoc){
+    public void genMarker(String mMarkerName, String mDescription, int rating, int reviewNum, GeoPoint mMarkerLoc){
         Marker newMarker = new Marker(map);
         newMarker.setPosition(mMarkerLoc);
         newMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
