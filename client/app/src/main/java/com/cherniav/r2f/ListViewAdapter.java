@@ -17,15 +17,14 @@ public class ListViewAdapter extends BaseAdapter {
 
     Context mContext;
     LayoutInflater inflater;
-    private List<RestaurantInfo> restaurantNamesList = null;
-    private ArrayList<RestaurantInfo> arraylist;
+    private List<RestaurantInfo> restaurantNamesList;
 
-    public ListViewAdapter(Context context, List<RestaurantInfo> restaurantNamesList) {
+    ViewHolder holder;
+
+    public ListViewAdapter(Context context, ArrayList<RestaurantInfo> restaurantNamesList) {
         mContext = context;
         this.restaurantNamesList = restaurantNamesList;
         inflater = LayoutInflater.from(mContext);
-        this.arraylist = new ArrayList<RestaurantInfo>();
-        this.arraylist.addAll(restaurantNamesList);
     }
 
     public class ViewHolder {
@@ -63,20 +62,10 @@ public class ListViewAdapter extends BaseAdapter {
         return view;
     }
 
+
     // Filter Class
-    public void filter(String charText) {
-        charText = charText.toLowerCase(Locale.getDefault());
-        restaurantNamesList.clear();
-        if (charText.length() == 0) {
-            restaurantNamesList.addAll(arraylist);
-        } else {
-            for (RestaurantInfo wp : arraylist) {
-                if (wp.getRestaurantName().toLowerCase(Locale.getDefault()).contains(charText)) {
-                    restaurantNamesList.add(wp);
-                }
-            }
-        }
+    public void filter(ArrayList<RestaurantInfo> newdata) {
+        this.restaurantNamesList = newdata;
         notifyDataSetChanged();
     }
-
 }
