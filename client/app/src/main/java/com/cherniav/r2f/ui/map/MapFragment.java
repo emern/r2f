@@ -67,7 +67,7 @@ public class MapFragment extends Fragment {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         @SuppressLint("MissingPermission")
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
