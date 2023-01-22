@@ -6,4 +6,5 @@
     <string name="review_title_string">Recommend to a Friend!</string>
     <string name="review_text_string">Please leave a recommendation to your friends for this establishment.</string>
     <string name="place_string">Default</string>
+    <string name="OSMCred">© <a href="openstreetmap.org/copyright">OpenStreetMap</a></string>
 </resources>

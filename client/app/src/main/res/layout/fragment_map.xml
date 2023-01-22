@@ -11,5 +11,13 @@
             android:layout_height="fill_parent"
             tilesource="Mapnik"/>
 
+        <TextView android:id="@+id/OSMCred"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="@string/OSMCred"
+            android:paddingBottom="45dp"
+            android:layout_gravity="bottom"/>
+
 
 </FrameLayout>
