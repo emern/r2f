@@ -8,18 +8,18 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.cherniav.r2f.ui.map.MapFragment"
-        android:label="@string/title_home"
+        android:label="@string/title_map"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.cherniav.r2f.ui.search.SearchFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.cherniav.r2f.ui.review.ReviewFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_reviews"
         tools:layout="@layout/fragment_review" />
 </navigation>
