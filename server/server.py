@@ -1,17 +1,17 @@
 """This is a server - basic test"""
 
-import socket
+import command_response
 
-PORT = 12000
+if __name__ == '__main__':
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind(('', PORT))
-    s.listen()
-    conn, addr = s.accept()
-    with conn:
-        print(f"Connected by {addr}")
-        while True:
-            data = conn.recv(1024)
-            if not data:
-                break
-            conn.sendall(data)
+    while 1:
+        user_in = input("> ")
+
+        valid_response = False
+        for cmd in command_response.ALL_CMDS:
+            if (user_in == cmd.name):
+                cmd.func()
+                valid_response = True
+
+        if valid_response == False:
+            print("Invalid command")
