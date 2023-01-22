@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.map.MapFragment">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map_container_view"
-        android:name="com.cherniav.r2f.fragment_map"
+        android:name="com.cherniav.r2f.ui.map.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:translationZ="7dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

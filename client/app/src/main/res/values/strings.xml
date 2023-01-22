@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">r2f</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_map">Map</string>
+    <string name="title_search">Search</string>
+    <string name="title_reviews">Recommend to a Friend</string>
+    <string name="review_title_string">Recommend to a Friend!</string>
+    <string name="review_text_string">Please leave a recommendation to your friends for this establishment.</string>
+    <string name="place_string">Default</string>
 </resources>
