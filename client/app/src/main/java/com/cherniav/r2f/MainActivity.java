@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -21,7 +23,14 @@ import org.osmdroid.config.Configuration;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+
+    // Declare variables needed for search
+    ListView list;
+    ListViewAdapter adapter;
+    SearchView editsearch;
+    String[] restaurantNameList;
+    ArrayList<RestaurantInfo> arraylist = new ArrayList<RestaurantInfo>();
 
     // Int to facilitate perms request
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
@@ -33,6 +42,31 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // GENERATE SAMPLE DATA FOR RESTAURANT NAMES
+        restaurantNameList = new String[]{"McDonalds", "Burger", "Mr Beast Burger",
+                "Cat", "Tortoise", "Rat", "Elephant", "Fox",
+                "Cow","Donkey","Monkey"};
+
+        // Locate the ListView in listview_main.xml
+        list = (ListView) findViewById(R.id.listview);
+
+        // NOTE: In for loop, data is mocked up so everything except for string is initialized as zero
+        for (int i = 0; i < restaurantNameList.length; i++) {
+            RestaurantInfo restaurantNames = new RestaurantInfo(restaurantNameList[i], 0, 0, 0, 0);
+            // Binds all strings into an array
+            arraylist.add(restaurantNames);
+        }
+
+        // Pass results to ListViewAdapter Class
+        adapter = new ListViewAdapter(this, arraylist);
+
+        // Binds the Adapter to the ListView
+        list.setAdapter(adapter);
+
+        // Locate the EditText in listview_main.xml
+        editsearch = (SearchView) findViewById(R.id.search);
+        editsearch.setOnQueryTextListener(this);
 
         // Perms setup
         Context ctx = getApplicationContext();
@@ -82,6 +116,19 @@ public class MainActivity extends AppCompatActivity {
                     permissionsToRequest.toArray(new String[0]),
                     REQUEST_PERMISSIONS_REQUEST_CODE);
         }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        String text = newText;
+        adapter.filter(text);
+        return false;
     }
 
 }
