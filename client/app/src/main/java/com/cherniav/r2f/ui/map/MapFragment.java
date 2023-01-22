@@ -2,6 +2,8 @@ package com.cherniav.r2f.ui.map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -78,9 +80,13 @@ public class MapFragment extends Fragment {
         genMarker("UBC", "Insert Description here", "12", "12", UBC_COORDS);
         genMarker("UBC 2", "Insert Description Here", "13", "13", UBC_COORDS_2);
 
+        Bitmap lookingBitmap = BitmapFactory.decodeResource(context.getResources(),
+                R.drawable.locsprite);
+
         // Create overlay for current location
         mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(context),map);
         mLocationOverlay.enableMyLocation();
+        mLocationOverlay.setDirectionArrow(lookingBitmap, lookingBitmap);
         map.getOverlays().add(this.mLocationOverlay);
 
         // Inflate the layout for this fragment
