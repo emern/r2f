@@ -10,7 +10,7 @@ public class ReviewViewModel extends ViewModel {
 
     public ReviewViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("Review Placeholder text");
     }
 
     public LiveData<String> getText() {
