@@ -2,7 +2,7 @@ package com.cherniav.r2f;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import com.cherniav.r2f.ui.R2fSocket;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -12,6 +12,8 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+        R2fSocket.searchRestaurantsWithName("Lawrence");
+        System.out.println(R2fSocket.updateRestaurantByPlaceId("ChIJi9Ix4HlxhlQRR9d6rVYjsFA"));
+        R2fSocket.searchNearbyRestaurants(49.23232257745346, -123.07608804311171, 5, 500);
     }
 }

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         // NOTE: In for loop, data is mocked up so everything except for string is initialized as zero
         for (int i = 0; i < restaurantNameList.length; i++) {
-            RestaurantInfo restaurantNames = new RestaurantInfo(restaurantNameList[i], 0, 0, 0, 0);
+            RestaurantInfo restaurantNames = new RestaurantInfo(restaurantNameList[i], 0, 0, 0, 0, "");
             // Binds all strings into an array
             arraylist.add(restaurantNames);
         }

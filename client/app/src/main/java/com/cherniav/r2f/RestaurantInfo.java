@@ -9,13 +9,16 @@ public class RestaurantInfo {
     private double rLatitude;
     private double rLongitude;
 
+    private String placeid;
+
     // Class constructor
-    public RestaurantInfo(String restaurantName, int numReviews, int reviewRating, double rLatitude, double rLongitude){
+    public RestaurantInfo(String restaurantName, int numReviews, int reviewRating, double rLatitude, double rLongitude, String placeid){
         this.restaurantName = restaurantName;
         this.numReviews = numReviews;
         this.reviewRating = reviewRating;
         this.rLatitude = rLatitude;
         this.rLongitude = rLongitude;
+        this.placeid = placeid;
     }
 
     // Functions to retrieve certain info
