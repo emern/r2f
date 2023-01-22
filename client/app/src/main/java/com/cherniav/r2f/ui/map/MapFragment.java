@@ -83,6 +83,7 @@ public class MapFragment extends Fragment {
         for (int i=0; i < markingInfo.size();i++){
 
             genMarker(markingInfo.get(i).getRestaurantName(), null, markingInfo.get(i).getReviewRating(), markingInfo.get(i).getNumReviews(), convertLoc(markingInfo.get(i).getrLatitude(), markingInfo.get(i).getrLongitude()));
+            System.out.println(markingInfo.get(i).getRestaurantName());
 
         }
 
