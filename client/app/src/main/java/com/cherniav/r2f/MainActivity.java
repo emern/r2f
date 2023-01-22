@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.SearchView;
@@ -18,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.cherniav.r2f.databinding.ActivityMainBinding;
+import com.cherniav.r2f.ui.R2fSocket;
 
 import org.osmdroid.config.Configuration;
 
@@ -29,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     ListView list;
     ListViewAdapter adapter;
     SearchView editsearch;
-    String[] restaurantNameList;
     ArrayList<RestaurantInfo> arraylist = new ArrayList<RestaurantInfo>();
 
     // Int to facilitate perms request
@@ -43,20 +44,18 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // GENERATE SAMPLE DATA FOR RESTAURANT NAMES
-        restaurantNameList = new String[]{"McDonalds", "Burger", "Mr Beast Burger",
-                "Cat", "Tortoise", "Rat", "Elephant", "Fox",
-                "Cow","Donkey","Monkey"};
 
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.listview);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        // NOTE: In for loop, data is mocked up so everything except for string is initialized as zero
-        for (int i = 0; i < restaurantNameList.length; i++) {
-            RestaurantInfo restaurantNames = new RestaurantInfo(restaurantNameList[i], 0, 0, 0, 0);
-            // Binds all strings into an array
-            arraylist.add(restaurantNames);
-        }
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                System.out.println("clicked" + position);
+            }
+
+        });
 
         // Pass results to ListViewAdapter Class
         adapter = new ListViewAdapter(this, arraylist);
@@ -145,15 +144,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        String text = newText;
-        adapter.filter(text);
-        return false;
+        ArrayList<RestaurantInfo> new_results = R2fSocket.searchRestaurantsWithName(newText);
+        adapter.filter(new_results);
+        return true;
     }
 
 }

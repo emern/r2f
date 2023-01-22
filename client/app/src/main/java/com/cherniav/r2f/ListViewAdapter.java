@@ -13,19 +13,16 @@ import java.util.Locale;
 
 public class ListViewAdapter extends BaseAdapter {
 
-    // Declare Variables
-
     Context mContext;
     LayoutInflater inflater;
-    private List<RestaurantInfo> restaurantNamesList = null;
-    private ArrayList<RestaurantInfo> arraylist;
+    private List<RestaurantInfo> restaurantNamesList;
 
-    public ListViewAdapter(Context context, List<RestaurantInfo> restaurantNamesList) {
+    ViewHolder holder;
+
+    public ListViewAdapter(Context context, ArrayList<RestaurantInfo> restaurantNamesList) {
         mContext = context;
         this.restaurantNamesList = restaurantNamesList;
         inflater = LayoutInflater.from(mContext);
-        this.arraylist = new ArrayList<RestaurantInfo>();
-        this.arraylist.addAll(restaurantNamesList);
     }
 
     public class ViewHolder {
@@ -47,6 +44,7 @@ public class ListViewAdapter extends BaseAdapter {
         return position;
     }
 
+    @Override
     public View getView(final int position, View view, ViewGroup parent) {
         final ViewHolder holder;
         if (view == null) {
@@ -59,24 +57,18 @@ public class ListViewAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         // Set the results into TextViews
-        holder.name.setText(restaurantNamesList.get(position).getRestaurantName());
+        holder.name.clearComposingText();
+        String display_str = restaurantNamesList.get(position).getRestaurantName() + '\n' +
+                            restaurantNamesList.get(position).getReviewRating();
+        holder.name.setText(display_str);
         return view;
     }
 
+
     // Filter Class
-    public void filter(String charText) {
-        charText = charText.toLowerCase(Locale.getDefault());
-        restaurantNamesList.clear();
-        if (charText.length() == 0) {
-            restaurantNamesList.addAll(arraylist);
-        } else {
-            for (RestaurantInfo wp : arraylist) {
-                if (wp.getRestaurantName().toLowerCase(Locale.getDefault()).contains(charText)) {
-                    restaurantNamesList.add(wp);
-                }
-            }
-        }
+    public void filter(ArrayList<RestaurantInfo> newdata) {
+        this.restaurantNamesList.clear();
+        this.restaurantNamesList.addAll(newdata);
         notifyDataSetChanged();
     }
-
 }
