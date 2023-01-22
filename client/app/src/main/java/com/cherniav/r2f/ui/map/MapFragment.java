@@ -83,7 +83,6 @@ public class MapFragment extends Fragment {
         for (int i=0; i < markingInfo.size();i++){
 
             genMarker(markingInfo.get(i).getRestaurantName(), null, markingInfo.get(i).getReviewRating(), markingInfo.get(i).getNumReviews(), convertLoc(markingInfo.get(i).getrLatitude(), markingInfo.get(i).getrLongitude()));
-            System.out.println(markingInfo.get(i).getRestaurantName());
 
         }
 
@@ -106,7 +105,7 @@ public class MapFragment extends Fragment {
         int lng = (int)(longitude*1E6);
         return new GeoPoint(lat, lng);
     }
-    public void genMarker(String mMarkerName, String mDescription, int rating, int reviewNum, GeoPoint mMarkerLoc){
+    public void genMarker(String mMarkerName, String mDescription, double rating, int reviewNum, GeoPoint mMarkerLoc){
         Marker newMarker = new Marker(map);
         newMarker.setPosition(mMarkerLoc);
         newMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
