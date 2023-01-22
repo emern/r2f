@@ -1,4 +1,4 @@
-package com.cherniav.r2f;
+package com.cherniav.r2f.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.cherniav.r2f.R;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
