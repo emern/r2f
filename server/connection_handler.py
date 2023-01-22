@@ -2,33 +2,42 @@ import socket
 import threading
 import queue
 from enum import Enum
+import json
+import tile_manager
 
 DEFAULT_PORT = 12000
 
 class ThreadMsg(Enum):
     SHUT_DOWN = 0
 
+class ClientMsgCode(Enum):
+    RESTAURANT_SEARCH_BY_NAME = 0,
+    RESTAURANT_RECOMMENDATION_UPDATE = 1,
+    RESTAURANT_GET_TOP_NEARBY = 2
+
 """
 Generic thread handler object for handling new requests from many devices
 """
 class ThreadHandler (threading.Thread):
-    def __init__(self, conn, addr):
+    def __init__(self, conn, addr, tile_manager):
         threading.Thread.__init__(self)
         self.conn = conn
         self.addr = addr
+        self.tm = tile_manager
     def run(self):
-        handle_connection_run(conn=self.conn, addr=self.addr)
+        handle_connection_run(conn=self.conn, addr=self.addr, tile_manager=self.tm)
 
 """
 Generic connection handler object for assigning incoming connections to threads
 """
 class ConnectionHandler (threading.Thread):
-    def __init__(self, port, q):
+    def __init__(self, port, q, tm):
         threading.Thread.__init__(self)
         self.port = port
         self.shutdown = q
+        self.tm = tm
     def run(self):
-        connection_handler_run(self.shutdown, self.port)
+        connection_handler_run(self.shutdown, self.tm, self.port)
 
 """
 Connection manager wrapper for starting and stopping conneciton management
@@ -38,15 +47,16 @@ class ConectionManagementObject:
         self.msg_queue = queue.Queue()
         self.running = False
         self.port = DEFAULT_PORT
-        self.connection_handler = ConnectionHandler(self.port, self.msg_queue)
+        self.tm = tile_manager.TileManager(tile_manager.API_KEY_FILE, tile_manager.TILE_DATABASE, tile_manager.RESTAURANT_DATABASE)
+        self.connection_handler = ConnectionHandler(self.port, self.msg_queue, self.tm)
 
     def start_connection_handler(self):
         # first check if handler is already running
         if (self.running == False):
             try:
                 # create and start the connection handler
-                connection_handler = ConnectionHandler(DEFAULT_PORT, self.msg_queue)
-                connection_handler.start()
+                self.connection_handler = ConnectionHandler(self.port, self.msg_queue, self.tm)
+                self.connection_handler.start()
                 self.running = True
             except:
                 print("failed to start connection handler")
@@ -65,7 +75,7 @@ class ConectionManagementObject:
 """
 Run the exception handler
 """
-def connection_handler_run(shutdown, port=DEFAULT_PORT):
+def connection_handler_run(shutdown, tm, port=DEFAULT_PORT):
 
     print("starting server connection handler")
     all_connections = []
@@ -90,7 +100,7 @@ def connection_handler_run(shutdown, port=DEFAULT_PORT):
                 # after processing any messages, then try and process incoming connections
                 try:
                     conn, addr = s.accept()
-                    newHandler = ThreadHandler(conn, addr)
+                    newHandler = ThreadHandler(conn, addr, tm)
                     newHandler.start()
                     all_connections.append(newHandler)
                 except:
@@ -99,18 +109,43 @@ def connection_handler_run(shutdown, port=DEFAULT_PORT):
     print("failed to start server host socket at port " + str(port))
 
 """
+JSON encoder for handling Restaurant JSON type
+"""
+class RestaurantEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, tile_manager.Restaurant):
+            return o.toJSON()
+        return RestaurantEncoder(self, o)
+
+"""
 Handle connections
 """
-def handle_connection_run(conn, addr):
+def handle_connection_run(conn, addr, tile_manager):
     with conn:
         print(f"Connected by {addr}")
-        while True:
-            # just send data back for now
-            data = conn.recv(1024)
-            if not data:
-                break
-            conn.sendall(data)
-        conn.close()
+        data = conn.recv(1024)
+        try:
+            outgoing = ""
+            # parse json
+            incomming = json.loads(data)
+            if (incomming["cmd"] == 0):
+                # restaurant query function
+                search_resp_data = tile_manager.search_for_restaurants_by_name(incomming["name"])
+                out = {"restaurants" : search_resp_data, "response" : "OK"}
+                outgoing = json.dumps(out, cls=RestaurantEncoder, sort_keys=True)
+            elif (incomming["cmd"] == 1):
+                tile_manager.update_restaurant_recommends_by_placeid(incomming["placeid"])
+                out = {"response" : "OK"}
+                outgoing = json.dumps(out)
+            elif (incomming["cmd"] == 2):
+                resp_data = tile_manager.get_top_results_in_radius(incomming["lat"], incomming["long"], incomming["num"], incomming["radius"])
+                out = {"restaurants" : resp_data, "response" : "OK"}
+                outgoing = json.dumps(out, cls=RestaurantEncoder, sort_keys=True)
+        except:
+            # operation failed
+            outgoing = json.dumps({"response" : "ERROR"})
+        conn.sendall(outgoing.encode("utf-8"))
+    conn.close()
 
 con_man = ConectionManagementObject()
 
