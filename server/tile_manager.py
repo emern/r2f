@@ -51,6 +51,8 @@ class Restaurant:
         self.placeid = placeid
         self.total_ratings = total_ratings
         self.recommends = recommends
+    def toJSON(self):
+        return self.__dict__
 
 class TileManager:
     def __init__(self, api_key_file_loc, tile_db, restaurant_db):
@@ -89,8 +91,8 @@ class TileManager:
                 PRICE VARCHAR(255),
                 CATEGORIES VARCHAR(255),
                 TOTAL_USER_RATINGS REAL,
-                LAT REAL,
-                LONG REAL,
+                LAT VARCHAR(255),
+                LONG VARCHAR(255),
                 RECOMMENDS INT,
                 TILENUM INT,
                 UNIQUE(PLACEID));""")
@@ -142,8 +144,8 @@ class TileManager:
                                 data[entry].price,
                                 str(data[entry].categories),
                                 data[entry].total_ratings,
-                                data[entry].ref_lat,
-                                data[entry].ref_long,
+                                str(data[entry].ref_lat),
+                                str(data[entry].ref_long),
                                 data[entry].recommends,
                                 self.get_tile_number_from_lat_long(data[entry].ref_lat, data[entry].ref_long))
 
@@ -158,20 +160,21 @@ class TileManager:
     def get_restaurant_data_from_tile(self, tilenum):
         tile_rs = []
         conn = sqlite3.connect(self.restaurant_db)
-        cursor = conn.execute("SELECT NAME,PLACEID,USER_RATING,ADDRESS,PRICE,CATEGORIES,TOTAL_USER_RATINGS,LAT,LONG,RECOMMENDS,TILENUM FROM RESTAURANTS WHERE TILENUM = " + str(tilenum))
+        cursor = conn.execute("SELECT NAME,PLACEID,USER_RATING,ADDRESS,PRICE,CATEGORIES,TOTAL_USER_RATINGS,LAT,LONG,RECOMMENDS,TILENUM FROM RESTAURANTS")
         for row in cursor:
-            new_r = Restaurant(lat=row[7],
-                                name=row[0],
-                                address=row[3],
-                                long=row[8],
-                                tilenum=row[10],
-                                categories=row[5],
-                                price=row[4],
-                                score=row[2],
-                                placeid=row[1],
-                                total_ratings=row[6],
-                                recommends=row[9])
-            tile_rs.append(new_r)
+            if (row[10] == tilenum):
+                new_r = Restaurant(lat=float(row[7]),
+                                    name=row[0],
+                                    address=row[3],
+                                    long=float(row[8]),
+                                    tilenum=row[10],
+                                    categories=row[5],
+                                    price=row[4],
+                                    score=row[2],
+                                    placeid=row[1],
+                                    total_ratings=row[6],
+                                    recommends=row[9])
+                tile_rs.append(new_r)
         cursor.close()
         conn.close()
         return tile_rs
@@ -185,10 +188,10 @@ class TileManager:
         cursor = conn.execute("SELECT NAME,PLACEID,USER_RATING,ADDRESS,PRICE,CATEGORIES,TOTAL_USER_RATINGS,LAT,LONG,RECOMMENDS,TILENUM from RESTAURANTS")
         for row in cursor:
             if (search_string.lower() in row[0].lower()):
-                new_r = Restaurant(lat=row[7],
+                new_r = Restaurant(lat=float(row[7]),
                                     name=row[0],
                                     address=row[3],
-                                    long=row[8],
+                                    long=float(row[8]),
                                     tilenum=row[10],
                                     categories=row[5],
                                     price=row[4],
@@ -307,7 +310,10 @@ class TileManager:
                 all_restaurants.extend(self.get_restaurant_data_from_tile(tile))
         # Score by popularity (because that is the idea of the app), however if the quality score is very low we scale a restaurants placement down
         # In-app recommends are worth 1000 regular Google ratings (will changle later)
-        all_restaurants.sort(key=lambda x: (x.total_ratings + (1000*x.recommends) if (x.score > 3.5) else (x.total_ratings * 0.6)), reverse=True)
+        all_restaurants.sort(key=lambda x: x.total_ratings + (1000*x.recommends), reverse=True)
+        print("found restaurants")
+        for res in all_restaurants:
+            print()
         return all_restaurants[:num_results]
                 
     def __google_places_nearby_search_api_call(self, radius, lat, long):
