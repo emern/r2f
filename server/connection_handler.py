@@ -123,16 +123,19 @@ Handle connections
 def handle_connection_run(conn, addr, tile_manager):
     with conn:
         print(f"Connected by {addr}")
-        data = conn.recv(1024)
+        data = conn.recv(1024).decode()
         try:
             outgoing = ""
             # parse json
+            data = data
             incomming = json.loads(data)
+            print(incomming)
             if (incomming["cmd"] == 0):
                 # restaurant query function
                 search_resp_data = tile_manager.search_for_restaurants_by_name(incomming["name"])
                 out = {"restaurants" : search_resp_data, "response" : "OK"}
                 outgoing = json.dumps(out, cls=RestaurantEncoder, sort_keys=True)
+                print(outgoing)
             elif (incomming["cmd"] == 1):
                 tile_manager.update_restaurant_recommends_by_placeid(incomming["placeid"])
                 out = {"response" : "OK"}
@@ -142,9 +145,12 @@ def handle_connection_run(conn, addr, tile_manager):
                 out = {"restaurants" : resp_data, "response" : "OK"}
                 outgoing = json.dumps(out, cls=RestaurantEncoder, sort_keys=True)
         except:
-            # operation failed
-            outgoing = json.dumps({"response" : "ERROR"})
-        conn.sendall(outgoing.encode("utf-8"))
+                # operation failed
+                outgoing = json.dumps({"response" : "ERROR"})
+        print("sending response!")
+        outgoing = outgoing + '\r\n'
+        print(outgoing)
+        conn.sendall(outgoing.encode())
     conn.close()
 
 con_man = ConectionManagementObject()
