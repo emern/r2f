@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
@@ -74,6 +75,12 @@ public class MapFragment extends Fragment {
         // Set map initialization point
         mapController.setCenter(startPoint);
 
+        // Generate example UBC marker
+        GeoPoint UBC_COORDS = convertLoc(49.2606, -123.2460);
+        GeoPoint UBC_COORDS_2 = convertLoc(49.267941, -123.247360);
+        genMarker("UBC", "Insert Description here", "12", "12", UBC_COORDS);
+        genMarker("UBC 2", "Insert Description Here", "13", "13", UBC_COORDS_2);
+
         // Create overlay for current location
         mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(context),map);
         mLocationOverlay.enableMyLocation();
@@ -88,5 +95,13 @@ public class MapFragment extends Fragment {
         int lat = (int)(latitude*1E6);
         int lng = (int)(longitude*1E6);
         return new GeoPoint(lat, lng);
+    }
+    public void genMarker(String mMarkerName, String mDescription, String rating, String reviewNum, GeoPoint mMarkerLoc){
+        Marker newMarker = new Marker(map);
+        newMarker.setPosition(mMarkerLoc);
+        newMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        newMarker.setTitle(mMarkerName);
+        newMarker.setSnippet("GMaps Rating: " + rating + "<br>GMaps Review Qty: " + reviewNum + "<br>" + mDescription);
+        map.getOverlays().add(newMarker);
     }
 }
